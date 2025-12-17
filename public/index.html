@@ -1,0 +1,156 @@
+@'
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Agent</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 24px; max-width: 980px; }
+      .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+      input, select { padding: 8px; }
+      button { padding: 8px 14px; cursor: pointer; }
+      textarea { width: 100%; height: 320px; margin-top: 10px; padding: 10px; }
+      #status { margin-top: 12px; }
+      .small { font-size: 12px; opacity: 0.8; margin-top: 6px; }
+      .box { padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-top: 14px; }
+      code { background: #f5f5f5; padding: 2px 6px; border-radius: 6px; }
+    </style>
+  </head>
+
+  <body>
+    <h2>Demo: Agent endpoint test</h2>
+
+    <div class="box">
+      <div class="row">
+        <label>Topic:
+          <input id="topic" value="kitten and moon" />
+        </label>
+
+        <label>Age:
+          <select id="age">
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </label>
+
+        <label>Pages:
+          <select id="pages">
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10" selected>10</option>
+          </select>
+        </label>
+
+        <label>Language:
+          <select id="language">
+            <option value="ru" selected>ru</option>
+            <option value="en">en</option>
+          </select>
+        </label>
+
+        <button id="run">Run</button>
+        <button id="ping">Ping API</button>
+        <button id="clear">Clear</button>
+      </div>
+
+      <div id="status">Ready.</div>
+      <div class="small">
+        Tip: after edits press <b>Ctrl+F5</b> to bypass cache.
+      </div>
+
+      <textarea id="out" placeholder="Result will appear here..."></textarea>
+
+      <div class="small">
+        Debug: open DevTools → Console/Network. Request goes to <code>/api/agent</code>.
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      function setStatus(msg) { $("status").textContent = msg; }
+      function setOut(text) { $("out").value = text ?? ""; }
+
+      async function callAgent(payload) {
+        console.log("Sending payload:", payload);
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 45000);
+
+        try {
+          const resp = await fetch("/api/agent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+          });
+
+          console.log("HTTP status:", resp.status);
+          const data = await resp.json();
+          console.log("Response JSON:", data);
+
+          return { resp, data };
+        } finally {
+          clearTimeout(timeout);
+        }
+      }
+
+      $("run").onclick = async () => {
+        setStatus("Работаю...");
+        setOut("");
+
+        const payload = {
+          topic: $("topic").value,
+          age: Number($("age").value),
+          pages: Number($("pages").value),
+          language: $("language").value
+        };
+
+        try {
+          const { resp, data } = await callAgent(payload);
+
+          if (!resp.ok) {
+            setStatus("Ошибка (HTTP)");
+            setOut(JSON.stringify({ status: resp.status, data }, null, 2));
+            return;
+          }
+
+          if (!data || data.ok !== true) {
+            setStatus("Ошибка (API ответ)");
+            setOut(JSON.stringify(data, null, 2));
+            return;
+          }
+
+          setStatus("Готово");
+          setOut(data.text || JSON.stringify(data, null, 2));
+        } catch (e) {
+          setStatus("Ошибка (frontend)");
+          setOut(String(e));
+          console.log("Frontend error:", e);
+        }
+      };
+
+      $("ping").onclick = async () => {
+        setStatus("Pinging...");
+        setOut("");
+
+        try {
+          const { resp, data } = await callAgent({});
+          setStatus(resp.ok ? "Ping OK" : "Ping HTTP error");
+          setOut(data?.text ? data.text : JSON.stringify(data, null, 2));
+        } catch (e) {
+          setStatus("Ping failed");
+          setOut(String(e));
+        }
+      };
+
+      $("clear").onclick = () => {
+        setStatus("Ready.");
+        setOut("");
+      };
+    </script>
+  </body>
+</html>
+'@ | Set-Content -Encoding UTF8 .\public\index.html
