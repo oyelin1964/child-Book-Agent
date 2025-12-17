@@ -1,157 +1,194 @@
-@'
 <!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Demo Agent</title>
-    <style>
-      body { font-family: system-ui, sans-serif; margin: 24px; max-width: 980px; }
-      .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-      input, select { padding: 8px; }
-      button { padding: 8px 14px; cursor: pointer; }
-      textarea { width: 100%; height: 320px; margin-top: 10px; padding: 10px; }
-      #status { margin-top: 12px; }
-      .small { font-size: 12px; opacity: 0.8; margin-top: 6px; }
-      .box { padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-top: 14px; }
-      code { background: #f5f5f5; padding: 2px 6px; border-radius: 6px; }
-    </style>
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depo Agent — Librarian (Demo)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; max-width: 980px; }
+    .box { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin-top: 14px; }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    button { padding: 8px 14px; cursor: pointer; }
+    select, input { padding: 8px; }
+    #status { margin-top: 10px; opacity: 0.85; }
+    #chat { height: 360px; overflow: auto; border: 1px solid #eee; border-radius: 10px; padding: 10px; background: #fafafa; }
+    .msg { margin: 10px 0; white-space: pre-wrap; }
+    .me { font-weight: 600; }
+    .muted { opacity: 0.7; font-size: 12px; }
+    textarea { width: 100%; height: 72px; padding: 10px; margin-top: 10px; }
+    .hidden { display: none; }
+    code { background: #f5f5f5; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
 
-  <body>
-    <h2>Demo: Agent endpoint test</h2>
-    <div style="color:#b00;font-weight:700">BUILD: 2025-12-17 20:00 (Libraterian)</div>
+<body>
+  <h2>Depo Agent — Librarian (Demo)</h2>
 
-    <div class="box">
-      <div class="row">
-        <label>Topic:
-          <input id="topic" value="kitten and moon" />
-        </label>
+  <!-- Step 0: Language selection BEFORE first message -->
+  <div class="box" id="setupBox">
+    <div class="row">
+      <label><b>Language:</b>
+        <select id="language">
+          <option value="he">עברית</option>
+          <option value="ru">Русский</option>
+          <option value="en" selected>English</option>
+        </select>
+      </label>
+      <button id="start">Start Librarian</button>
+      <span class="muted">Language is fixed for the whole session.</span>
+    </div>
+    <div class="muted" style="margin-top:8px;">
+      Flow: Age → Challenge → Deep-dive → Validation → Narrative distance → JSON
+    </div>
+  </div>
 
-        <label>Age:
-          <select id="age">
-            <option value="4" selected>4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-        </label>
+  <!-- Chat -->
+  <div class="box hidden" id="chatBox">
+    <div id="chat"></div>
 
-        <label>Pages:
-          <select id="pages">
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="10" selected>10</option>
-          </select>
-        </label>
-
-        <label>Language:
-          <select id="language">
-            <option value="ru" selected>ru</option>
-            <option value="en">en</option>
-          </select>
-        </label>
-
-        <button id="run">Run</button>
-        <button id="ping">Ping API</button>
-        <button id="clear">Clear</button>
-      </div>
-
-      <div id="status">Ready.</div>
-      <div class="small">
-        Tip: after edits press <b>Ctrl+F5</b> to bypass cache.
-      </div>
-
-      <textarea id="out" placeholder="Result will appear here..."></textarea>
-
-      <div class="small">
-        Debug: open DevTools → Console/Network. Request goes to <code>/api/agent</code>.
-      </div>
+    <textarea id="input" placeholder="Type your answer..."></textarea>
+    <div class="row">
+      <button id="send">Send</button>
+      <button id="restart">Restart</button>
+      <span class="muted">API: <code>/api/librarian/start</code>, <code>/api/librarian/message</code></span>
     </div>
 
-    <script>
-      const $ = (id) => document.getElementById(id);
+    <div id="status">Ready.</div>
 
-      function setStatus(msg) { $("status").textContent = msg; }
-      function setOut(text) { $("out").value = text ?? ""; }
+    <div class="box hidden" id="jsonBox" style="margin-top:14px;">
+      <div class="row" style="justify-content:space-between;">
+        <div><b>JSON brief</b> (only after confirmation)</div>
+        <button id="copyJson">Copy JSON</button>
+      </div>
+      <pre id="jsonOut" style="white-space:pre-wrap;"></pre>
+    </div>
+  </div>
 
-      async function callAgent(payload) {
-        console.log("Sending payload:", payload);
+<script>
+  const $ = (id) => document.getElementById(id);
+  let sessionId = null;
+  let currentPhase = 0;
+  let lastJson = null;
 
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 45000);
+  function addMsg(who, text) {
+    const div = document.createElement("div");
+    div.className = "msg " + (who === "me" ? "me" : "ai");
+    div.textContent = (who === "me" ? "You: " : "Librarian: ") + text;
+    $("chat").appendChild(div);
+    $("chat").scrollTop = $("chat").scrollHeight;
+  }
 
-        try {
-          const resp = await fetch("/api/agent", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-            signal: controller.signal
-          });
+  function setStatus(s) { $("status").textContent = s; }
 
-          console.log("HTTP status:", resp.status);
-          const data = await resp.json();
-          console.log("Response JSON:", data);
+  async function postJSON(url, payload) {
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    return { resp, data };
+  }
 
-          return { resp, data };
-        } finally {
-          clearTimeout(timeout);
-        }
+  $("start").onclick = async () => {
+    setStatus("Starting...");
+    $("chat").innerHTML = "";
+    $("jsonOut").textContent = "";
+    lastJson = null;
+    $("jsonBox").classList.add("hidden");
+
+    const language = $("language").value;
+
+    try {
+      const { resp, data } = await postJSON("/api/librarian/start", { language });
+      if (!resp.ok || !data.ok) {
+        setStatus("Start error");
+        addMsg("ai", data.error || "Failed to start");
+        return;
       }
 
-      $("run").onclick = async () => {
-        setStatus("Работаю...");
-        setOut("");
+      sessionId = data.session_id;
+      currentPhase = data.phase;
 
-        const payload = {
-          topic: $("topic").value,
-          age: Number($("age").value),
-          pages: Number($("pages").value),
-          language: $("language").value
-        };
+      $("setupBox").classList.add("hidden");
+      $("chatBox").classList.remove("hidden");
 
-        try {
-          const { resp, data } = await callAgent(payload);
+      addMsg("ai", data.assistant_text);
+      setStatus("Session started. Phase " + currentPhase);
+    } catch (e) {
+      setStatus("Start failed");
+      addMsg("ai", String(e));
+    }
+  };
 
-          if (!resp.ok) {
-            setStatus("Ошибка (HTTP)");
-            setOut(JSON.stringify({ status: resp.status, data }, null, 2));
-            return;
-          }
+  $("send").onclick = async () => {
+    const text = $("input").value.trim();
+    if (!text) return;
 
-          if (!data || data.ok !== true) {
-            setStatus("Ошибка (API ответ)");
-            setOut(JSON.stringify(data, null, 2));
-            return;
-          }
+    $("input").value = "";
+    addMsg("me", text);
+    setStatus("Working...");
 
-          setStatus("Готово");
-          setOut(data.text || JSON.stringify(data, null, 2));
-        } catch (e) {
-          setStatus("Ошибка (frontend)");
-          setOut(String(e));
-          console.log("Frontend error:", e);
-        }
-      };
+    try {
+      const { resp, data } = await postJSON("/api/librarian/message", {
+        session_id: sessionId,
+        user_text: text
+      });
 
-      $("ping").onclick = async () => {
-        setStatus("Pinging...");
-        setOut("");
+      if (!resp.ok || !data.ok) {
+        setStatus("Error");
+        addMsg("ai", data.error || "Request failed");
+        return;
+      }
 
-        try {
-          const { resp, data } = await callAgent({});
-          setStatus(resp.ok ? "Ping OK" : "Ping HTTP error");
-          setOut(data?.text ? data.text : JSON.stringify(data, null, 2));
-        } catch (e) {
-          setStatus("Ping failed");
-          setOut(String(e));
-        }
-      };
+      currentPhase = data.phase;
+      addMsg("ai", data.assistant_text);
+      setStatus("Phase " + currentPhase);
 
-      $("clear").onclick = () => {
-        setStatus("Ready.");
-        setOut("");
-      };
-    </script>
-  </body>
+      if (data.done && data.json_payload) {
+        lastJson = data.json_payload;
+        $("jsonOut").textContent = JSON.stringify(lastJson, null, 2);
+        $("jsonBox").classList.remove("hidden");
+        setStatus("Done. JSON is ready.");
+      }
+    } catch (e) {
+      setStatus("Failed");
+      addMsg("ai", String(e));
+    }
+  };
+
+  $("restart").onclick = () => {
+    sessionId = null;
+    currentPhase = 0;
+    lastJson = null;
+
+    $("chat").innerHTML = "";
+    $("input").value = "";
+    $("jsonOut").textContent = "";
+    $("jsonBox").classList.add("hidden");
+
+    $("chatBox").classList.add("hidden");
+    $("setupBox").classList.remove("hidden");
+    setStatus("Ready.");
+  };
+
+  $("copyJson").onclick = async () => {
+    if (!lastJson) return;
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(lastJson, null, 2));
+      setStatus("JSON copied");
+    } catch (e) {
+      setStatus("Copy failed");
+    }
+  };
+
+  // Enter to send (Shift+Enter for newline)
+  $("input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      $("send").click();
+    }
+  });
+</script>
+</body>
 </html>
-'@ | Set-Content -Encoding UTF8 .\public\index.html
