@@ -1,0 +1,87 @@
+{
+  "medical": {
+    "en": [
+      "What words do you use at home for the condition or equipment (e.g., 'super-juice', 'magic button')?",
+      "Which part is most stressful: the procedure, the waiting, or feeling 'different'?",
+      "Should the hero be brave during a procedure, or focus on accepting the condition as a 'special feature'?"
+    ],
+    "ru": [
+      "Какие слова вы используете дома для состояния/оборудования (например, «супер-сок», «волшебная кнопка»)?",
+      "Что стрессует больше: сама процедура, ожидание или чувство «я не такой как все»?",
+      "Вы хотите, чтобы герой был смелым во время процедуры или чтобы история помогала принять это как «особенность»?"
+    ],
+    "he": [
+      "באילו מילים אתם משתמשים בבית למצב/ציוד (למשל „מיץ-על”, „כפתור קסם”)?",
+      "מה הכי מלחיץ: הפרוצדורה עצמה, ההמתנה, או התחושה „אני שונה”?",
+      "האם תרצי שהגיבור יהיה אמיץ בזמן פרוצדורה, או שהסיפור יתמקד בקבלה של זה כ„תכונה מיוחדת”?"
+    ]
+  },
+  "fears": {
+    "en": [
+      "What exactly triggers the fear (shadows, being alone, specific sounds)?",
+      "Does your child have a comfort object or ritual that helps them feel safer?",
+      "Should the hero befriend the scary thing, or use a protective magic tool/skill?"
+    ],
+    "ru": [
+      "Что именно запускает страх (тени, одиночество, конкретные звуки)?",
+      "Есть ли у ребёнка «предмет безопасности» или ритуал, который помогает?",
+      "Вы хотите, чтобы герой подружился со страшным или использовал защитный «магический инструмент/навык»?"
+    ],
+    "he": [
+      "מה בדיוק מפעיל את הפחד (צללים, להיות לבד, צלילים מסוימים)?",
+      "יש לילד חפץ ניחומים או טקס שעוזר לו להרגיש בטוח יותר?",
+      "להעדיף שהגיבור יתיידד עם המפחיד, או שישתמש בכלי/יכולת קסומה להגנה?"
+    ]
+  },
+  "eating": {
+    "en": [
+      "Which foods are the main challenge?",
+      "What does refusal look like (gagging, crying, or just saying 'no')?",
+      "What is the goal: one tiny bite, or understanding food as 'fuel for adventures'?"
+    ],
+    "ru": [
+      "Какие продукты — главная проблема?",
+      "Как выглядит отказ (рвотный рефлекс, плач, или просто «нет»)?",
+      "Цель — попробовать один крошечный укус или понять, что еда — это «топливо для приключений»?"
+    ],
+    "he": [
+      "אילו מאכלים הם האתגר המרכזי?",
+      "איך נראה הסירוב (בחילה/הקאה, בכי, או פשוט „לא”)?",
+      "מה המטרה: ביס זעיר אחד, או להבין שאוכל הוא „דלק להרפתקאות”?"
+    ]
+  },
+  "emotion": {
+    "en": [
+      "How does your child describe the feeling (a volcano, a heavy stone, etc.)?",
+      "What currently helps them calm down (breathing, hug, quiet time)?",
+      "What situation should the hero master (school, friends, bedtime, etc.)?"
+    ],
+    "ru": [
+      "Как ребёнок описывает чувство (вулкан, тяжёлый камень и т.п.)?",
+      "Что сейчас помогает успокаиваться (дыхание, объятие, тишина)?",
+      "Какую ситуацию герой должен «освоить» (школа, друзья, сон и т.п.)?"
+    ],
+    "he": [
+      "איך הילד מתאר את ההרגשה (למשל „הר געש”, „אבן כבדה”)?",
+      "מה עוזר לו להירגע עכשיו (נשימות, חיבוק, זמן שקט)?",
+      "איזו סיטואציה תרצי שהגיבור ילמד להתמודד איתה (גן/בית ספר, חברים, שינה וכו’)?"
+    ]
+  },
+  "transition": {
+    "en": [
+      "What is the biggest worry about this change (attention, unknown place, etc.)?",
+      "What is one thing that stays the same for the child during the change?",
+      "Should the story focus on saying goodbye to the old, or saying hello to the new?"
+    ],
+    "ru": [
+      "Какой самый большой страх в этом изменении (внимание, неизвестность и т.п.)?",
+      "Что остаётся неизменным для ребёнка несмотря на перемены?",
+      "Фокус истории: «попрощаться со старым» или «поздороваться с новым»?"
+    ],
+    "he": [
+      "מה הדאגה הכי גדולה בשינוי הזה (תשומת לב, מקום לא מוכר וכו’)?",
+      "מהו דבר אחד שנשאר אותו הדבר עבור הילד בתוך השינוי?",
+      "להתמקד ב„להיפרד מהישן” או ב„להגיד שלום לחדש”?"
+    ]
+  }
+}

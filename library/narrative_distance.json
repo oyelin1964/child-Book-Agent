@@ -1,0 +1,29 @@
+[
+  {
+    "id": "projected",
+    "labels": { "en": "Projected", "ru": "Проецированная", "he": "מושלך" },
+    "descs": {
+      "en": "Hero is different; similar problem but not 'your child'.",
+      "ru": "Герой другой; проблема похожая, но не «про вашего ребёнка».",
+      "he": "הגיבור אחר; בעיה דומה, אבל לא „על הילד שלך”."
+    }
+  },
+  {
+    "id": "close_far",
+    "labels": { "en": "Close-Far", "ru": "Близко-далеко", "he": "קרוב-רחוק" },
+    "descs": {
+      "en": "Hero resembles your child, but with some distance.",
+      "ru": "Герой похож на ребёнка, но есть дистанция.",
+      "he": "הגיבור מזכיר את הילד, אבל עדיין יש מרחק."
+    }
+  },
+  {
+    "id": "close",
+    "labels": { "en": "Close", "ru": "Близко", "he": "קרוב" },
+    "descs": {
+      "en": "Very close: names/details can match your child.",
+      "ru": "Очень близко: можно использовать имена/детали ребёнка.",
+      "he": "מאוד קרוב: אפשר להתאים שמות/פרטים לילד."
+    }
+  }
+]

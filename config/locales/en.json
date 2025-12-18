@@ -1,0 +1,22 @@
+{
+  "choose_age": "Choose the child's age range:",
+  "describe_challenge": "Describe the main challenge in 1–3 sentences.",
+  "clarify_category": "I’m not sure which category fits. Which one is closest?",
+  "pick_two_more": "I’ll ask a couple of short questions:",
+  "validation": "Here is what I understood. Is it accurate, or should we change anything?",
+  "validation_fix_request": "What should we change? Reply with short corrections (age/category/trigger/goal/home terms).",
+  "missing_required": "I still miss required details (trigger and goal). Please write: what exactly happens? and what do you want to change?",
+  "choose_distance": "Choose narrative distance:",
+  "distance_hint": "Type: projected / close_far / close",
+  "ready_closing": "Great. I’m ready. Here is the structured brief (JSON):",
+  "declined": "I’m sorry — I can’t confidently match this to a supported theme right now.",
+  "polite_decline": "I want to help, but I still can’t match this to a clear category. Could you rephrase the challenge in one simple sentence?",
+  "labels_age": "Age",
+  "labels_category": "Category",
+  "labels_subtheme": "Sub-theme",
+  "labels_trigger": "Trigger",
+  "labels_home_terms": "Home terms",
+  "labels_coping": "Coping",
+  "labels_comfort": "Comfort object",
+  "labels_goal": "Goal"
+}

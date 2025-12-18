@@ -1,0 +1,11 @@
+{
+  "supported_languages": ["he", "ru", "en"],
+  "age_ranges": [
+    { "id": "3-6", "labels": { "en": "3–6", "ru": "3–6", "he": "3–6" } },
+    { "id": "6-9", "labels": { "en": "6–9", "ru": "6–9", "he": "6–9" } },
+    { "id": "9-12", "labels": { "en": "9–12", "ru": "9–12", "he": "9–12" } }
+  ],
+  "max_unclear_category_attempts": 2,
+  "deep_dive_questions_count": 3,
+  "required_fields": ["age_range", "category_id", "trigger", "goal"]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "medical",
+    "labels": { "en": "Medical & Health Challenges", "ru": "Медицина и здоровье", "he": "אתגרים רפואיים ובריאותיים" },
+    "subThemes": [
+      { "id": "diabetes", "labels": { "en": "Diabetes", "ru": "Диабет", "he": "סוכרת" } },
+      { "id": "allergies", "labels": { "en": "Allergies", "ru": "Аллергии", "he": "אלרגיות" } },
+      { "id": "procedures", "labels": { "en": "Medical procedures", "ru": "Процедуры", "he": "פרוצדורות רפואיות" } },
+      { "id": "chronic", "labels": { "en": "Chronic conditions", "ru": "Хронические состояния", "he": "מצבים כרוניים" } }
+    ]
+  },
+  {
+    "id": "fears",
+    "labels": { "en": "Fears & Phobias", "ru": "Страхи и фобии", "he": "פחדים ופוביות" },
+    "subThemes": [
+      { "id": "darkness", "labels": { "en": "Darkness", "ru": "Темнота", "he": "חושך" } },
+      { "id": "monsters", "labels": { "en": "Monsters", "ru": "Монстры", "he": "מפלצות" } },
+      { "id": "animals", "labels": { "en": "Animals", "ru": "Животные", "he": "חיות" } },
+      { "id": "doctors", "labels": { "en": "Doctors", "ru": "Врачи", "he": "רופאים" } },
+      { "id": "noise", "labels": { "en": "Loud noises", "ru": "Громкие звуки", "he": "רעשים חזקים" } }
+    ]
+  },
+  {
+    "id": "eating",
+    "labels": { "en": "Eating & Nutrition", "ru": "Еда и питание", "he": "אכילה ותזונה" },
+    "subThemes": [
+      { "id": "picky", "labels": { "en": "Picky eating", "ru": "Привередливость", "he": "בררנות" } },
+      { "id": "new_foods", "labels": { "en": "Fear of new foods", "ru": "Страх нового", "he": "פחד ממאכלים חדשים" } },
+      { "id": "mealtime", "labels": { "en": "Mealtime anxiety", "ru": "Тревога за столом", "he": "חרדה בזמן הארוחה" } }
+    ]
+  },
+  {
+    "id": "emotion",
+    "labels": { "en": "Emotional Regulation", "ru": "Эмоции и саморегуляция", "he": "וויסות רגשי" },
+    "subThemes": [
+      { "id": "anger", "labels": { "en": "Anger/tantrums", "ru": "Злость/истерики", "he": "כעס/התפרצויות" } },
+      { "id": "sadness", "labels": { "en": "Sadness", "ru": "Грусть", "he": "עצב" } },
+      { "id": "shyness", "labels": { "en": "Shyness", "ru": "Стеснение", "he": "ביישנות" } },
+      { "id": "separation", "labels": { "en": "Separation anxiety", "ru": "Тревога разлуки", "he": "חרדת פרידה" } }
+    ]
+  },
+  {
+    "id": "transition",
+    "labels": { "en": "Life Transitions", "ru": "Переходы и изменения", "he": "מעברי חיים" },
+    "subThemes": [
+      { "id": "sibling", "labels": { "en": "New sibling", "ru": "Новый ребёнок", "he": "אח/ות חדש/ה" } },
+      { "id": "moving", "labels": { "en": "Moving house", "ru": "Переезд", "he": "מעבר דירה" } },
+      { "id": "school", "labels": { "en": "Starting school", "ru": "Начало школы", "he": "תחילת בית ספר" } },
+      { "id": "divorce", "labels": { "en": "Divorce", "ru": "Развод", "he": "גירושין" } }
+    ]
+  }
+]
