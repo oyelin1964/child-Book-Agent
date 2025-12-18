@@ -103,6 +103,18 @@ ${text}`;
   }
 });
 
+app.get("/api/routes", (req, res) => {
+  const routes = [];
+  for (const layer of app._router.stack) {
+    if (layer.route) {
+      const methods = Object.keys(layer.route.methods).join(",").toUpperCase();
+      routes.push(`${methods} ${layer.route.path}`);
+    }
+  }
+  res.json({ ok: true, routes });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Open http://localhost:${PORT}`);
 });
